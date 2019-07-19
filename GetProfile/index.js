@@ -1,7 +1,15 @@
+const got = require('got');
+
+const azure = require('azure-storage');
+const ServiceClient = {
+  DEVSTORE_STORAGE_ACCESS_KEY: "SECRET",
+  DEVSTORE_STORAGE_ACCOUNT: "SECRET",
+}
+const tableService = azure.createTableService(ServiceClient.DEVSTORE_STORAGE_ACCOUNT, ServiceClient.DEVSTORE_STORAGE_ACCESS_KEY);
+const tableName = "profiles";
+
 module.exports = function (context, req) {
   context.log('Code Explorer starts here.');
-
-  const got = require('got');
 
   if (profileName = req.query.profile) {
 
@@ -58,7 +66,7 @@ module.exports = function (context, req) {
           'valid' : isValid
         }
 
-      let output = `FreeCodeCamp profile for ${profileName} \n`;
+      let output = `FreeCodeCamp.org profile for ${profileName} \n`;
       output += `points: ${userSave.points} \n`;
       // Include a list of the users scores across the intervals.
       output += "pointsTable: \n" + Object.keys(userSave.pointsTable).map(function(key, index) {
@@ -69,13 +77,31 @@ module.exports = function (context, req) {
         }
       }).join('');
 
-      // TODO: persist to DB.
-
-      context.res = {
-        status: 200,
-        body: output
+      // Persist to DB.
+      let itemProfile = {
+        name: profileName,
+        profile: JSON.stringify(userSave)
       };
-      context.done();
+      itemProfile["PartitionKey"] = "profiles";
+      itemProfile["RowKey"] = profileName;
+
+      tableService.insertOrMergeEntity(tableName, itemProfile, { echoContent: true }, function (error, result, response) {
+        if (!error) {
+          // This returns a 201 code + the database response inside the body
+          // Calling status like this will automatically trigger a context.done()
+          //context.res.status(201).json(response);
+          context.log('DB write success');
+          context.res = {
+            status: 200,
+            body: output
+          };
+          context.done();
+        } else {
+          // In case of an error we return an appropriate status code and the error returned by the DB
+          context.log('DB write fail');
+          context.res.status(500).json({ error: error });
+        }
+      });
 
     }).catch(error => {
       console.log(error.response.body);
@@ -88,6 +114,5 @@ module.exports = function (context, req) {
     };
     context.done();
   }
-
 
 };
