@@ -35,7 +35,6 @@ module.exports = function (context, req) {
 
       // The list of intervals we're interested in recording.
       let intervals = [1,7,30,90,180,365];
-
       const pointsTable = intervals.reduce((tally, days) => {
         tally[days] = challenges.reduce((total, challenge) => {
           // Calculate the date X days ago for comparison.
@@ -80,7 +79,15 @@ module.exports = function (context, req) {
       // Persist to DB.
       let itemProfile = {
         name: profileName,
-        profile: JSON.stringify(userSave)
+        profile: JSON.stringify(userSave),
+        points: userSave.points,
+        valid: userSave.isValid,
+        last1: userSave.pointsTable[1],
+        last7: userSave.pointsTable[7],
+        last30: userSave.pointsTable[30],
+        last90: userSave.pointsTable[90],
+        last180: userSave.pointsTable[180],
+        last365: userSave.pointsTable[365],
       };
       itemProfile["PartitionKey"] = "profiles";
       itemProfile["RowKey"] = profileName;
