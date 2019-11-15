@@ -1,0 +1,25 @@
+{
+  "name": "cdex",
+  "version": "1.0.0",
+  "description": "NPM for Code Explorer API.",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/georgezee/code-explorer.git"
+  },
+  "keywords": [
+    "cdex",
+    "code",
+    "explorer",
+    "freecodecamp"
+  ],
+  "author": "George Ziady",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/georgezee/code-explorer/issues"
+  },
+  "homepage": "https://github.com/georgezee/code-explorer#readme"
+}
