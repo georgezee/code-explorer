@@ -7,13 +7,16 @@ module.exports.handler = (event, context, callback) => {
   var authToken = process.env.twilio_auth_token;
 
   const sourcePhone = process.env.twilio_phone;
-  const targetPhone = 'INSERT-PHONE-HERE';
+  const targetPhone = process.env.admin_phone;
 
   var twilio = require('twilio');
   var client = new twilio(accountSid, authToken);
 
+  const username = event["queryStringParameters"]['user'] || 'unknown';
+  const amountRequested = event["queryStringParameters"]['amount'] || 'unknown';
+
   client.messages.create({
-      body: 'Transfer requested for Miriam.',
+      body: `Transfer requested for ${username} of ${amountRequested}.`,
       to: targetPhone,  // Text this number
       from: sourcePhone // From a valid Twilio number
   })
@@ -22,13 +25,10 @@ module.exports.handler = (event, context, callback) => {
   const response = {
     statusCode: 200,
     body: JSON.stringify({
-      message: 'Go Serverless v1.0! Your function executed successfully!',
-      input: event,
+      message: 'Message sent'
     }),
   };
 
   callback(null, response);
 
-  // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-  // callback(null, { message: 'Go Serverless v1.0! Your function executed successfully!', event });
 };

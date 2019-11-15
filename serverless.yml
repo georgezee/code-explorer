@@ -14,3 +14,8 @@ functions:
       - http:
           path: /request-transfer
           method: get
+    environment:
+      twilio_sid: ${ssm:/twilio_sid~true}
+      twilio_auth_token: ${ssm:/twilio_auth_token~true}
+      twilio_phone: ${ssm:/twilio_phone~true}
+      admin_phone: ${ssm:/admin_phone~true}
