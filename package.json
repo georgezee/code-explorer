@@ -23,7 +23,8 @@
   },
   "homepage": "https://github.com/georgezee/code-explorer#readme",
   "devDependencies": {
-    "aws-sdk": "^2.572.0"
+    "aws-sdk": "^2.572.0",
+    "serverless": "^1.58.0"
   },
   "dependencies": {
     "twilio": "^3.37.1"

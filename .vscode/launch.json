@@ -2,11 +2,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Attach to Node Functions",
             "type": "node",
-            "request": "attach",
-            "port": 9229,
-            "preLaunchTask": "func: host start"
+            "request": "launch",
+            "name": "request-transfer",
+            "program": "${workspaceFolder}/node_modules/.bin/sls",
+            "args": [
+                "invoke",
+                "local",
+                "-f",
+                "request-transfer",
+                "-p",
+                "examples/request-transfer.json"
+            ]
         }
     ]
 }
