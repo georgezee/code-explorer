@@ -19,3 +19,10 @@ functions:
       twilio_auth_token: ${ssm:/cdex/prod/twilio_auth_token~true}
       twilio_phone: ${ssm:/cdex/prod/twilio_phone~true}
       admin_phone: ${ssm:/cdex/prod/admin_phone~true}
+
+  fcc-get-completed:
+    handler: functions/fcc-get-completed.handler
+    events:
+      - http:
+          path: /fcc-get-completed
+          method: get
