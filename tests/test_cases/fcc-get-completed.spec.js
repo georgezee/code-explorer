@@ -4,16 +4,21 @@ const when = require('../steps/when');
 const init = require('../steps/init').init;
 
 describe("Check fetching of FCC points",function () {
+  let res;
   beforeAll(
-    function () {
+    async (done) => {
       init();
+      res = await when.we_invoke_fcc_get_completed();
+      done();
     }
   );
 
-  test('Should return a valid response with points', async function () {
-    let res = await when.we_invoke_fcc_get_completed();
+  test('Should return a valid response', async function () {
     expect(res.statusCode).toBe(200);
+  });
 
+  test('Should return points as a number',  function () {
+    expect(Number.isNaN(res.body.points)).toBe(false)
   });
 });
 
