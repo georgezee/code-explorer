@@ -20,9 +20,35 @@ functions:
       twilio_phone: ${ssm:/cdex/prod/twilio_phone~true}
       admin_phone: ${ssm:/cdex/prod/admin_phone~true}
 
+  payment:
+    handler: functions/payment.handler
+    events:
+      - http:
+          path: /payment
+          method: get
+
   fcc-get-completed:
     handler: functions/fcc-get-completed.handler
     events:
       - http:
           path: /fcc-get-completed
           method: get
+
+plugins:
+  - serverless-export-env
+
+resources:
+  Resources:
+    membersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: members
+        AttributeDefinitions:
+          - AttributeName: name
+            AttributeType: S
+        KeySchema:
+          - AttributeName: name
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
