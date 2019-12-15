@@ -4,42 +4,40 @@ const when = require('../steps/when');
 const init = require('../steps/init').init;
 
 describe("Check fetching of FCC points",function () {
-  let res;
   beforeAll(
-    async (done) => {
+    function () {
       init();
-      res = await when.we_invoke_fcc_get_completed();
-      done();
     }
   );
 
-  test('Should return a valid response', async function () {
-    expect(res.statusCode).toBe(200);
+  test('Should return a valid response with points', async function () {
+    let response = await when.we_invoke_fcc_get_completed('georgezee');
+    expect(response.statusCode).toBe(200);
+    let result = JSON.parse(response.body);
+    expect(Number.isNaN(result.points)).toBe(false);
   });
 
-  test('Should return points as a number',  function () {
-    expect(Number.isNaN(res.body.points)).toBe(false)
-  });
-});
-
-describe(`Test FCC get completed`, () => {
-  beforeAll(() => {
-  });
-
-  afterEach(() => {
-  });
-
-  afterAll(() => {
-  });
-
-  test(`First test example`, () => {
-
-    // const event = eventStub;
-    // const context = {};
-
-    // const result = handler(event, context);
-    // expect(result).resolves.toMatchSnapshot();
-    const response = "cool";
-    expect(response).toBe('cool');
+  test('Should return an error for invalid users', async function () {
+    let response = await when.we_invoke_fcc_get_completed('not-a-real-user');
+    let result = JSON.parse(response.body);
+    expect(response.statusCode).toBe(400);
+    expect(result.message).toMatch(/No profile/);
   });
 });
+
+// Sample code for tests.
+// describe(`Test FCC get completed`, () => {
+//   beforeAll(() => {
+//   });
+
+//   afterEach(() => {
+//   });
+
+//   afterAll(() => {
+//   });
+
+//   test(`First test example`, () => {
+//     const response = "cool";
+//     expect(response).toBe('cool');
+//   });
+// });

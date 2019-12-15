@@ -1,6 +1,6 @@
 {
   "queryStringParameters":
     {
-      "user": "georgezee"
+      "user": "{username}"
     }
 }

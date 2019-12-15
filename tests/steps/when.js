@@ -21,8 +21,12 @@ let we_invoke_request_transfer = function() {
   });
 }
 
-let we_invoke_fcc_get_completed = function() {
+let we_invoke_fcc_get_completed = function(username) {
+  // We receive the username with this function call, to substituted into the passed parameters.
   let parameters = require(`${APP_ROOT}/examples/fcc-get-completed.json`);
+  parameters = JSON.parse(
+    JSON.stringify(parameters).replace(/{username}/g,username)
+  )
   let handler = require(`${APP_ROOT}/functions/fcc-get-completed`).handler;
 
   return new Promise((resolve, reject) => {
@@ -39,6 +43,7 @@ let we_invoke_fcc_get_completed = function() {
 
   });
 }
+
 
 module.exports = {
   we_invoke_request_transfer,
