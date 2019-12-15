@@ -43,7 +43,8 @@ module.exports.handler = async (event, context, callback) => {
           message: `No profile found for ${profileName}`
         })
     };
-    return response;
+    callback(null, response);
+    return;
   } else if (profileData.entities.user[profileName].isLocked) {
     response = {
         statusCode: 400,
@@ -52,7 +53,8 @@ module.exports.handler = async (event, context, callback) => {
           message: `${profileName} is locked - this profile needs to be set to public to be visible here.`
         })
     };
-    return response;
+    callback(null, response);
+    return;
   }
 
   // Otherwise we're working with a valid profile.

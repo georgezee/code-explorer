@@ -11,7 +11,7 @@ let init = function () {
     return;
   }
 
-  console.log("Initializing ...");
+  console.log("Initializing for tests ...");
   initialized = true;
 }
 
