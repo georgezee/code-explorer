@@ -10,11 +10,12 @@ describe("Check fetching of FCC points",function () {
     }
   );
 
-  test('Should return a valid response with points', async function () {
-    let response = await when.we_invoke_fcc_get_completed('georgezee');
+  test('Should return a valid response with points and projects', async function () {
+    let response = await when.we_invoke_fcc_get_completed('miriamjinx');
     expect(response.statusCode).toBe(200);
     let result = JSON.parse(response.body);
-    expect(Number.isNaN(result.points)).toBe(false);
+    expect(typeof result.points).toBe('number')
+    expect(typeof result.projects).toBe('number')
   });
 
   test('Should return an error for invalid users', async function () {
