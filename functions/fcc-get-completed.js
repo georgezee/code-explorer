@@ -60,12 +60,32 @@ module.exports.handler = async (event, context, callback) => {
   // Otherwise we're working with a valid profile.
   const points = profileData.entities.user[profileName].points;
 
+  // The list of projects completed are those with challengeType set to 3.
+  let projects = 0;
+  const challenges = profileData.entities.user[profileName].completedChallenges;
+  projects = challenges.reduce((total, challenge) => {
+    if (challenge.challengeType && challenge.challengeType == 3) {
+      total ++;
+    }
+    return total;
+  }, 0);
+
+  let isValid = true;
+  if (profileData.entities.user[profileName].isCheater
+      || !profileData.entities.user[profileName].isHonest) {
+    isValid = false;
+  }
+
+
+
   response = {
     statusCode: 200,
     headers: responseHeader,
     body: JSON.stringify({
       user: profileName,
       points: points,
+      projects: projects,
+      valid: isValid,
       timestamp: new Date()
     }),
   };
