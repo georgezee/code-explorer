@@ -30,8 +30,15 @@ module.exports.handler = async (event, context, callback) => {
 
   // Fetch the user profile from FCC.
   const url = 'https://api.freecodecamp.org/api/users/get-public-profile?username=' + profileName;
-  const ret = await axios.get(url);
 
+  // Add headers as a browser, to avoid 502 response.
+  let urlConfig = {
+    headers: {
+      'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.89 Safari/537.36"
+    }
+  }
+
+  const ret = await axios.get(url, urlConfig);
   let profileData = ret.data;
 
   // Check for invalid profile profileData.
